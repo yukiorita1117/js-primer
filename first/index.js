@@ -1,10 +1,14 @@
 function main() {
-  fetchUserInfo("yukiorita1117");
+  fetchUserInfo("yukiorita1117")
+    //http通信なのでエラーハンドリングもかく！
+    .catch(error => {
+      console.error(`エラーしました(${error})`);
+    });
 }
 
 function fetchUserInfo(userId) {
-  fetch(`https://api.github.com/users/${encodeURIComponent(userId)}`)
-    .then(response => {
+  fetch(`https://api.github.com/users/${encodeURIComponent(userId)}`).then(
+    response => {
       //okプロパティはHTTPステータスコードが200番台:true 400や500番台:false を返す
       if (!response.ok) {
         console.error("エラーレスポンスです", response);
@@ -18,11 +22,8 @@ function fetchUserInfo(userId) {
           displayView(view);
         });
       }
-    })
-    //http通信なのでエラーハンドリングもかく！
-    .catch(error => {
-      console.error(error);
-    });
+    }
+  );
 }
 
 function createView(userInfo) {
