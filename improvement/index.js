@@ -1,6 +1,9 @@
 function main() {
   fetchUserInfo("yukiorita1117")
-    //http通信なのでエラーハンドリングもかく！
+    // ここではJSONオブジェクトで解決されるPromise
+    .then(userInfo => createView(userInfo))
+    // ここではHTML文字列で解決されるPromise
+    .then(view => displayView(view))
     .catch(error => {
       console.error(`エラーしました(${error})`);
     });
@@ -15,12 +18,7 @@ function fetchUserInfo(userId) {
       } else {
         // return console.log(response.json());
         //responseだけだとオブジェクト、response.json()でjson形式にしてPromiseの形で返す
-        return response.json().then(userInfo => {
-          //``の前にタグ関数をかく。関数のタグ付けを行う
-          const view = createView(userInfo);
-
-          displayView(view);
-        });
+        return response.json();
       }
     }
   );
