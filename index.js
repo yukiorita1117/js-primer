@@ -34,9 +34,8 @@ function fetchUserInfo(userId) {
 function escapeHTML(strings, ...values) {
   //valuesにはuser情報が [yukio yukiorita1117 https://avatars3.githubusercontent.com/u/29562675?v=4 yukiorita1117 null 5] のように配列で入ってる
   //stringsにはviewで定義しているDOMが入ってる
-  console.log(i);
-
   return strings.reduce((result, str, i) => {
+    //currentindexをiで渡す。
     console.log(i);
     const value = values[i - 1];
     if (typeof value === "string") {
