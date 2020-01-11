@@ -1,3 +1,7 @@
+function main() {
+  fetchUserInfo("yukiorita1117");
+}
+
 function fetchUserInfo(userId) {
   fetch(`https://api.github.com/users/${encodeURIComponent(userId)}`)
     .then(response => {
@@ -9,18 +13,9 @@ function fetchUserInfo(userId) {
         //responseだけだとオブジェクト、response.json()でjson形式にしてPromiseの形で返す
         return response.json().then(userInfo => {
           //``の前にタグ関数をかく。関数のタグ付けを行う
-          const view = escapeHTML`
-                <h4>${userInfo.name} (@${userInfo.login})</h4>
-                <img src="${userInfo.avatar_url}" alt="${userInfo.login}" height="100">
-                <dl>
-                    <dt>Location</dt>
-                    <dd>${userInfo.location}</dd>
-                    <dt>Repositories</dt>
-                    <dd>${userInfo.public_repos}</dd>
-                </dl>
-                `;
-          const result = document.getElementById("result");
-          result.innerHTML = view;
+          const view = createView(userInfo);
+
+          displayView(view);
         });
       }
     })
@@ -28,6 +23,24 @@ function fetchUserInfo(userId) {
     .catch(error => {
       console.error(error);
     });
+}
+
+function createView(userInfo) {
+  return escapeHTML`
+      <h4>${userInfo.name} (@${userInfo.login})</h4>
+      <img src="${userInfo.avatar_url}" alt="${userInfo.login}" height="100">
+      <dl>
+          <dt>Location</dt>
+          <dd>${userInfo.location}</dd>
+          <dt>Repositories</dt>
+          <dd>${userInfo.public_repos}</dd>
+      </dl>
+      `;
+}
+
+function displayView(view) {
+  const result = document.getElementById("result");
+  result.innerHTML = view;
 }
 
 //userInfoを取り出して、エスケープすべきか判断し、その後、元のように格納するタグ関数
