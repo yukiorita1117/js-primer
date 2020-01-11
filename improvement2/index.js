@@ -1,26 +1,32 @@
 async function main() {
   try {
-    const userInfo = fetchUserInfo("yukiorita1117");
+    const usetId = getUserId();
+    const userInfo = await fetchUserInfo(usetId);
     const view = createView(userInfo);
     displayView(view);
   } catch (error) {
-    console.error(`エラーしました(${error})`);
+    console.error(`エラーが発生しました (${error})`);
   }
 }
 
 function fetchUserInfo(userId) {
-  fetch(`https://api.github.com/users/${encodeURIComponent(userId)}`).then(
-    response => {
-      //okプロパティはHTTPステータスコードが200番台:true 400や500番台:false を返す
-      if (!response.ok) {
-        console.error("エラーレスポンスです", response);
-      } else {
-        // return console.log(response.json());
-        //responseだけだとオブジェクト、response.json()でjson形式にしてPromiseの形で返す
-        return response.json();
-      }
+  return fetch(
+    `https://api.github.com/users/${encodeURIComponent(userId)}`
+  ).then(response => {
+    //okプロパティはHTTPステータスコードが200番台:true 400や500番台:false を返す
+    if (!response.ok) {
+      console.error("エラーレスポンスです", response);
+    } else {
+      // return console.log(response.json());
+      //responseだけだとオブジェクト、response.json()でjson形式にしてPromiseの形で返す
+      return response.json();
     }
-  );
+  });
+}
+
+function getUserId() {
+  const value = document.getElementById("userId").value;
+  return encodeURIComponent(value);
 }
 
 function createView(userInfo) {
